@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For you</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#1b0f2e;--night2:#34174a;--rose:#ff8fab;--peach:#ffc8a2;--lav:#f3e8ff;--gold:#ffe29a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(120% 90% at 50% 0%,var(--night2),var(--night) 65%);color:var(--lav);font-family:"Caveat","Segoe Script",cursive;overflow:hidden;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.serif{font-family:"Fraunces",Georgia,serif;font-style:italic}
+#bg{position:fixed;inset:0;pointer-events:none}
+#bg i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.3;animation:tw 4s ease-in-out infinite}
+@keyframes tw{50%{opacity:.9}}
+#seal{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;text-align:center;padding:2rem;background:radial-gradient(100% 80% at 50% 40%,#4a1d5c,var(--night));transition:opacity 1.2s ease,visibility 1.2s}
+#seal.gone{opacity:0;visibility:hidden}
+#seal h1{margin:0;font-size:clamp(2rem,8vw,3.4rem);font-weight:400;line-height:1.15}
+#seal p{margin:0;font-size:1.6rem;color:var(--peach)}
+#wax{width:112px;height:112px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,#ff9db5,#d6336c 60%,#9c1f4d);box-shadow:0 10px 40px #d6336c66,inset 0 -6px 12px #0004;display:grid;place-items:center;font-size:3rem;animation:beat 1.6s ease-in-out infinite}
+#wax:focus-visible,.star:focus-visible,#love:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.08)}}
+#sky{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center}
+#title{margin:clamp(1.2rem,5vh,3rem) 1rem 0;text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.2}
+#hint{margin:.3rem 0 0;font-size:1.4rem;color:var(--peach);text-align:center;min-height:1.8rem}
+#stage{position:relative;width:min(88vw,52vh,440px);aspect-ratio:1;margin-top:1.2rem}
+#lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#lines polyline{fill:none;stroke:var(--rose);stroke-width:.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.5 1.5;opacity:.6}
+#lines.done polyline{fill:#ff8fab22;stroke-dasharray:none;opacity:1}#stage.done{animation:beat 1.6s ease-in-out infinite}
+.star{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border:0;background:none;cursor:pointer;font-size:1.7rem;color:#ffffff88;transition:transform .4s,color .4s,text-shadow .4s}
+.star::before{content:"✦"}
+.star:hover{transform:scale(1.25)}
+.star.lit{color:var(--gold);text-shadow:0 0 12px var(--gold),0 0 24px var(--rose);animation:tw2 2.6s ease-in-out infinite}@keyframes tw2{50%{transform:scale(1.18)}}
+.star.pulse{animation:ping 1.8s ease-in-out infinite}
+@keyframes ping{50%{transform:scale(1.35);color:#fff}}
+
+#card{position:fixed;left:50%;bottom:max(1.4rem,env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);width:min(92vw,460px);padding:1.1rem 1.4rem;border-radius:20px;background:#2a123dee;border:1px solid #ff8fab55;text-align:center;font-size:1.65rem;line-height:1.25;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s}
+#card.show{opacity:1;transform:translate(-50%,0)}
+#end{position:fixed;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;padding:2rem;background:#1b0f2ee6;opacity:0;visibility:hidden;transition:opacity 1.4s,visibility 1.4s}
+#end.show{opacity:1;visibility:visible}
+#end h2{margin:0;font-weight:400;font-size:clamp(1.9rem,7vw,3rem);line-height:1.2;max-width:16ch}
+#end p{margin:0;font-size:1.75rem;max-width:22ch;color:var(--peach)}
+#love{font:700 1.6rem "Caveat",cursive;color:#fff;background:linear-gradient(135deg,#ff6b9a,#d6336c);border:0;border-radius:999px;padding:.7rem 1.8rem;cursor:pointer;box-shadow:0 8px 30px #d6336c66}
+.fl{position:fixed;bottom:-30px;z-index:9;pointer-events:none;animation:up 3.2s ease-out forwards}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.sp{position:fixed;z-index:9;pointer-events:none;font-size:1rem;animation:sp .9s ease-out forwards}@keyframes sp{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}.sh{position:fixed;z-index:1;width:90px;height:2px;pointer-events:none;background:linear-gradient(90deg,#fff,transparent);animation:sh 1s ease-out forwards}@keyframes sh{0%{opacity:1;transform:translate(0,0) rotate(30deg)}100%{opacity:0;transform:translate(240px,140px) rotate(30deg)}}@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<div id="seal">
+  <h1 class="serif">Abeni made something<br>just for you</h1>
+  <button id="wax" aria-label="Open">💌</button>
+  <p>tap the seal, <span id="n1"></span> 🥺<br>it’s all about you</p>
+</div>
+
+<main id="sky" aria-live="polite">
+  <h2 id="title" class="serif" style="font-weight:400">Seven stars. Seven reasons Abeni is obsessed with you.</h2>
+  <p id="hint">tap the glowing stars</p>
+  <div id="stage">
+    <svg id="lines" viewBox="0 0 100 100" aria-hidden="true"><polyline id="poly" points=""/></svg>
+  </div>
+  <div id="card" role="status"></div>
+</main>
+
+<section id="end" aria-live="polite">
+  <h2 class="serif" id="endTitle"></h2>
+  <p>and Abeni would choose you in every universe.</p>
+  <p id="blush" style="font-size:1.5rem;color:var(--rose)">P.S. you’re blushing right now, aren’t you? 😏</p>
+  <button id="love">me too 🥹</button>
+  <p style="font-size:1.5rem;color:var(--lav)">— <span id="from"></span></p>
+</section>
+
+<script>
+// ✏️ EDIT THESE
+var HER = "babe";            // her name or nickname
+var FROM = "Abeni";       // how you sign it
+var REASONS = [
+  "your laugh is my favorite sound, and I make music for a living 😭",
+  "one text from you and I’m grinning at my phone like a fool",
+  "you’re so beautiful it’s honestly unfair to everybody else",
+  "you’re the melody I can’t stop replaying. no skips, ever",
+  "Abeni was NOT looking for love… then you showed up and ruined me 🥰",
+  "you make me want to be better, every single day",
+  "with you, home feels like a person"
+];
+
+var $ = function(id){return document.getElementById(id)};
+$("n1").textContent = HER;
+$("from").textContent = FROM;
+$("endTitle").textContent = "You’re my favorite person, " + HER + ".";
+
+// twinkling background
+var bg = $("bg");
+for (var i = 0; i < 40; i++) {
+  var s = document.createElement("i");
+  s.style.left = Math.random()*100 + "%";
+  s.style.top = Math.random()*100 + "%";
+  s.style.animationDelay = (Math.random()*4) + "s";
+  bg.appendChild(s);
+}
+
+// heart constellation: 7 points along a heart curve
+var ts = [0.15, 0.95, 1.9, 3.14159, 4.38, 5.33, 6.13];
+var pts = ts.map(function(t){
+  var x = 16*Math.pow(Math.sin(t),3);
+  var y = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+  return {x: 50 + x*2.7, y: 46 - y*2.7};
+});
+var stage = $("stage"), lit = [], order = [];
+pts.forEach(function(p, i){
+  var b = document.createElement("button");
+  b.className = "star" + (i === 0 ? " pulse" : "");
+  b.style.left = p.x + "%"; b.style.top = p.y + "%";
+  b.setAttribute("aria-label", "Star " + (i+1));
+  b.onclick = function(){ light(i, b); };
+  stage.appendChild(b);
+});
+
+function light(i, b){
+  var card = $("card");
+  typeIt(card, REASONS[i]); burst(b);
+  card.classList.add("show");
+  b.classList.remove("pulse");
+  if (lit.indexOf(i) === -1) {
+    lit.push(i); b.classList.add("lit");
+    $("hint").textContent = lit.length + " of 7 lit";
+    var ps = lit.slice().sort(function(a,c){return a-c}).map(function(k){return pts[k].x+","+pts[k].y});
+    if (lit.length === 7) ps.push(pts[0].x+","+pts[0].y);
+    $("poly").setAttribute("points", ps.join(" "));
+    if (lit.length === 7) {
+      $("lines").classList.add("done"); stage.classList.add("done");
+      $("hint").textContent = "look what you made";
+      setTimeout(function(){ $("end").classList.add("show"); hearts(24); }, 3200);
+    }
+  }
+}
+
+$("wax").onclick = function(){ $("seal").classList.add("gone"); hearts(10); setInterval(function(){ if (!document.hidden) hearts(1); }, 1800); setInterval(function(){ if (!document.hidden) shoot(); }, 4500); setTimeout(shoot, 800); };
+var LINES = ["stop, you’re making me blush 🙈", "Abeni loves you more tho 😤💗", "okay fine, we both win 🥰", "I’m the luckiest guy alive fr 🥹"], li = 0;
+$("love").onclick = function(){ hearts(28); $("blush").textContent = LINES[li++ % LINES.length]; };
+
+var tm;
+function typeIt(el, txt){ clearInterval(tm); el.textContent = ""; var k = 0; tm = setInterval(function(){ el.textContent = txt.slice(0, ++k); if (k >= txt.length) clearInterval(tm); }, 26); }
+function burst(b){
+  var r = b.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  for (var i = 0; i < 8; i++) {
+    var s = document.createElement("span"), a = i/8*6.283, d = 40 + Math.random()*30;
+    s.className = "sp"; s.textContent = i % 2 ? "✨" : "💗";
+    s.style.left = cx + "px"; s.style.top = cy + "px";
+    s.style.setProperty("--dx", Math.cos(a)*d + "px"); s.style.setProperty("--dy", Math.sin(a)*d + "px");
+    document.body.appendChild(s);
+    setTimeout((function(e){ return function(){ e.remove(); }; })(s), 950);
+  }
+}
+function shoot(){
+  var s = document.createElement("div"); s.className = "sh";
+  s.style.left = Math.random()*50 + "vw"; s.style.top = Math.random()*30 + "vh";
+  document.body.appendChild(s);
+  setTimeout(function(){ s.remove(); }, 1050);
+}
+function hearts(n){
+  var set = ["💗","💖","💕","✨","🌹","💞"];
+  for (var i = 0; i < n; i++) (function(i){
+    setTimeout(function(){
+      var h = document.createElement("span");
+      h.className = "fl"; h.textContent = set[Math.floor(Math.random()*set.length)];
+      h.style.left = Math.random()*95 + "vw";
+      h.style.fontSize = (1.2 + Math.random()*1.8) + "rem";
+      h.style.animationDuration = (2.4 + Math.random()*2) + "s";
+      document.body.appendChild(h);
+      setTimeout(function(){ h.remove(); }, 4600);
+    }, i*90);
+  })(i);
+}
+</script>
+</body>
+</html>
